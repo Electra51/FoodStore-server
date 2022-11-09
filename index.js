@@ -43,6 +43,14 @@ async function run() {
         });
 
         //review api
+        app.get('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const review = await reviewCollection.findOne(query);
+            res.send(review);
+        });
+
+
         app.get('/reviews', async (req, res) => {
            console.log(req.query.email)
             let query = {};
