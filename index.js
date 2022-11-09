@@ -70,16 +70,20 @@ async function run() {
             res.send(result);
         });
 
-        app.patch('/reviews/:id', async (req, res) => {
+        app.put('/reviews/:id', async (req, res) => {
             const id = req.params.id;
-            const status =req.body.status
-            const query = { _id: ObjectId(id) };
-            const updatedDoc = {
+            const filter = { _id: ObjectId(id) };
+            const Review = req.body;
+            const option = { upsert: true }
+            
+            const updatedReview = {
                 $set: {
-                    status:status
+                    name: Review.name,
+                    message: Review.message
                 }
             }
-            const result = await reviewCollection.updateOne(query,updatedDoc);
+
+            const result = await reviewCollection.updateOne(filter,updatedReview,option);
             res.send(result);
         })
 
